@@ -1,0 +1,15 @@
+[package]
+name = "pop-launcher-intellij"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1.0.137", features = ["derive"] }
+serde-xml-rs = "0.5.1"
+fuzzy-matcher = "0.3.7"
+pop-launcher-toolkit = { git = "https://github.com/oknozor/launcher" }
+tokio = { version = "1.18.2", features = ["rt"]  }
+dirs = "4.0.0"
+anyhow = "1.0.57"
