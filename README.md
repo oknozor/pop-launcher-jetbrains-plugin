@@ -24,3 +24,7 @@ use the provided recipe:
 just install-sway
 ```
 
+## Usage
+
+Just type "idea " followed by a search query to lookup jetbrains idea projects. 
+
