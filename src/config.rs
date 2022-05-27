@@ -13,13 +13,13 @@ pub mod trusted_project {
 
     #[derive(Debug, Deserialize, PartialEq)]
     pub struct Option {
-        pub map: Map
+        pub map: Map,
     }
 
     #[derive(Debug, Deserialize, PartialEq)]
     pub struct Map {
         #[serde(rename = "$value")]
-        pub entries: Vec<Project>
+        pub entries: Vec<Project>,
     }
     #[derive(Debug, Deserialize, PartialEq)]
     pub struct Project {

@@ -1,5 +1,5 @@
 [package]
-name = "pop-launcher-intellij"
+name = "pop-launcher-jetbrains-plugin"
 version = "0.1.0"
 edition = "2021"
 
@@ -13,3 +13,8 @@ pop-launcher-toolkit = { git = "https://github.com/oknozor/launcher" }
 tokio = { version = "1.18.2", features = ["rt"]  }
 dirs = "4.0.0"
 anyhow = "1.0.57"
+fork = "0.1.19"
+
+[features]
+deafult = []
+sway = []
