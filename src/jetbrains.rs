@@ -36,7 +36,7 @@ impl Ide {
             Ide::Rider => "Rider",
             Ide::WebStorm => "WebStorm",
             Ide::PhpStorm => "PhpStorm",
-            Ide::Datagrip => "Datagrip",
+            Ide::Datagrip => "DataGrip",
         }
     }
 
@@ -140,7 +140,7 @@ impl TryFrom<PathBuf> for IdeConfigPath {
                 let ide = Ide::PhpStorm;
                 ide.parse_version(&path)
                     .map(|version| IdeConfigPath::new(path, ide, version))
-            } else if filename.starts_with("Datagrip") {
+            } else if filename.starts_with("DataGrip") {
                 let ide = Ide::Datagrip;
                 ide.parse_version(&path)
                     .map(|version| IdeConfigPath::new(path, ide, version))
