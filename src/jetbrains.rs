@@ -1,6 +1,8 @@
 use crate::{Application, ProjectEntry};
 use anyhow::anyhow;
 use std::cmp::Ordering;
+use std::fmt;
+use std::fmt::Formatter;
 use std::path::{Path, PathBuf};
 
 #[derive(Debug, PartialEq)]
@@ -8,6 +10,12 @@ pub struct IdeConfigPath {
     path: PathBuf,
     ide: Ide,
     version: u32,
+}
+
+impl fmt::Display for IdeConfigPath {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        writeln!(f, "ide={}, path={:?}", self.ide.as_str(), self.path)
+    }
 }
 
 impl IdeConfigPath {
@@ -36,7 +44,7 @@ impl Ide {
             Ide::Rider => "Rider",
             Ide::WebStorm => "WebStorm",
             Ide::PhpStorm => "PhpStorm",
-            Ide::Datagrip => "Datagrip",
+            Ide::Datagrip => "DataGrip",
         }
     }
 
@@ -66,18 +74,19 @@ impl Ide {
 }
 
 impl IdeConfigPath {
-    pub(crate) fn get_entries(self) -> anyhow::Result<Vec<ProjectEntry>> {
+    pub(crate) fn get_entries(&self) -> anyhow::Result<Vec<ProjectEntry>> {
         let trusted_projects = self.path.join("options/trusted-paths.xml");
         if trusted_projects.exists() {
             let trusted_projects = std::fs::read_to_string(trusted_projects)?;
             let trusted_projects: Application = serde_xml_rs::from_str(&trusted_projects)?;
             let home = dirs::home_dir().expect("$HOME not found");
 
-            let projects = trusted_projects
-                .component
-                .option
-                .map
-                .entries
+            let components = trusted_projects
+                .components
+                .into_iter()
+                .flat_map(|component| component.option.map.entries);
+
+            let projects = components
                 .into_iter()
                 .map(|project| {
                     let path = project
@@ -140,7 +149,7 @@ impl TryFrom<PathBuf> for IdeConfigPath {
                 let ide = Ide::PhpStorm;
                 ide.parse_version(&path)
                     .map(|version| IdeConfigPath::new(path, ide, version))
-            } else if filename.starts_with("Datagrip") {
+            } else if filename.starts_with("DataGrip") {
                 let ide = Ide::Datagrip;
                 ide.parse_version(&path)
                     .map(|version| IdeConfigPath::new(path, ide, version))

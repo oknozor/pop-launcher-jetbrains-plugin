@@ -3,7 +3,8 @@ pub mod trusted_project {
 
     #[derive(Debug, Deserialize, PartialEq)]
     pub struct Application {
-        pub component: Component,
+        #[serde(rename = "$value")]
+        pub components: Vec<Component>,
     }
 
     #[derive(Debug, Deserialize, PartialEq)]

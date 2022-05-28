@@ -123,7 +123,13 @@ async fn main() -> Result<()> {
 
     let projects: Vec<ProjectEntry> = configs
         .into_iter()
-        .filter_map(|ide| ide.get_entries().ok())
+        .filter_map(|ide| {
+            let entries = ide.get_entries();
+            if let Err(err) = &entries {
+                error!("Failed to get entries, {ide}, {err}");
+            }
+            entries.ok()
+        })
         .flatten()
         .collect();
 
