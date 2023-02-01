@@ -72,7 +72,7 @@ impl Ide {
             Ide::WebStorm => "webstorm",
             Ide::PhpStorm => "phpstorm",
             Ide::Datagrip => "datagrip",
-            Ide::PyCharm => "datagrip",
+            Ide::PyCharm => "pycharm",
         }
     }
 }
