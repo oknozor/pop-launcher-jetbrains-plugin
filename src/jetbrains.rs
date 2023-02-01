@@ -33,6 +33,7 @@ pub enum Ide {
     WebStorm,
     PhpStorm,
     Datagrip,
+    PyCharm
 }
 
 impl Ide {
@@ -45,6 +46,7 @@ impl Ide {
             Ide::WebStorm => "WebStorm",
             Ide::PhpStorm => "PhpStorm",
             Ide::Datagrip => "DataGrip",
+            Ide::PyCharm => "PyCharm"
         }
     }
 
@@ -57,6 +59,7 @@ impl Ide {
             Ide::WebStorm => "webstorm",
             Ide::PhpStorm => "phpstorm",
             Ide::Datagrip => "datagrip",
+            Ide::PyCharm => "pycharm"
         }
     }
 
@@ -69,6 +72,7 @@ impl Ide {
             Ide::WebStorm => "webstorm",
             Ide::PhpStorm => "phpstorm",
             Ide::Datagrip => "datagrip",
+            Ide::PyCharm => "datagrip",
         }
     }
 }
@@ -81,12 +85,13 @@ impl IdeConfigPath {
             let trusted_projects: Application = serde_xml_rs::from_str(&trusted_projects)?;
             let home = dirs::home_dir().expect("$HOME not found");
 
-            let components = trusted_projects
+            let entries = trusted_projects
                 .components
                 .into_iter()
-                .flat_map(|component| component.option.map.entries);
+                .filter(|component| component.name == "Trusted.Paths")
+                .flat_map(|component| component.option.map.unwrap().entries);
 
-            let projects = components
+            let projects = entries
                 .into_iter()
                 .map(|project| {
                     let path = project
@@ -151,6 +156,10 @@ impl TryFrom<PathBuf> for IdeConfigPath {
                     .map(|version| IdeConfigPath::new(path, ide, version))
             } else if filename.starts_with("DataGrip") {
                 let ide = Ide::Datagrip;
+                ide.parse_version(&path)
+                    .map(|version| IdeConfigPath::new(path, ide, version))
+    	    } else if filename.starts_with("PyCharm") {
+                let ide = Ide::PyCharm;
                 ide.parse_version(&path)
                     .map(|version| IdeConfigPath::new(path, ide, version))
             } else {
