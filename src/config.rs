@@ -9,12 +9,19 @@ pub mod trusted_project {
 
     #[derive(Debug, Deserialize, PartialEq)]
     pub struct Component {
-        pub option: Option,
+        pub option: ComponentOption,
+        pub name: String
     }
 
     #[derive(Debug, Deserialize, PartialEq)]
-    pub struct Option {
-        pub map: Map,
+    pub struct ComponentOption {
+        pub map: Option<Map>,
+        #[serde(skip)]
+        pub list: Option<List>
+    }
+
+    #[derive(Debug, Deserialize, PartialEq)]
+    pub struct List {
     }
 
     #[derive(Debug, Deserialize, PartialEq)]
