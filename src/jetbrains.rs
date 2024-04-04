@@ -33,6 +33,7 @@ pub enum Ide {
     WebStorm,
     PhpStorm,
     Datagrip,
+    RustRover,
 }
 
 impl Ide {
@@ -45,6 +46,7 @@ impl Ide {
             Ide::WebStorm => "WebStorm",
             Ide::PhpStorm => "PhpStorm",
             Ide::Datagrip => "DataGrip",
+            Ide::RustRover => "RustRover"
         }
     }
 
@@ -57,6 +59,7 @@ impl Ide {
             Ide::WebStorm => "webstorm",
             Ide::PhpStorm => "phpstorm",
             Ide::Datagrip => "datagrip",
+            Ide::RustRover => "rustrover",
         }
     }
 
@@ -69,6 +72,7 @@ impl Ide {
             Ide::WebStorm => "webstorm",
             Ide::PhpStorm => "phpstorm",
             Ide::Datagrip => "datagrip",
+            Ide::RustRover => "rustrover",
         }
     }
 }
@@ -151,6 +155,10 @@ impl TryFrom<PathBuf> for IdeConfigPath {
                     .map(|version| IdeConfigPath::new(path, ide, version))
             } else if filename.starts_with("DataGrip") {
                 let ide = Ide::Datagrip;
+                ide.parse_version(&path)
+                    .map(|version| IdeConfigPath::new(path, ide, version))
+            } else if filename.starts_with("RustRover") {
+                let ide = Ide::RustRover;
                 ide.parse_version(&path)
                     .map(|version| IdeConfigPath::new(path, ide, version))
             } else {
